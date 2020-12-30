@@ -1,0 +1,30 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - echo installing nodejs....
+      - yum clean all && yum makecache fast
+      - yum install -y gcc-c++ make
+      - curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+      - yum install -y nodejs --skip-broken
+      - echo NODE VERSION--...
+      - node -v
+  pre_build:
+    commands:
+      - echo installing dependencies...
+      - npm install @nestjs/cli -g
+      - npm install
+  build:
+    commands:
+      - echo testing...
+      - echo building...
+      - npm run build
+  post_build:
+    commands:
+      - echo Removing node_modules
+      - rm -rf node_modules
+artifacts:
+  files:
+    - "**/*"
+  base-directory: ./
